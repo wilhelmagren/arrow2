@@ -27,7 +27,7 @@ pub(crate) type Extension = Option<(String, Option<String>)>;
 /// Each variant has a corresponding [`PhysicalType`], obtained via [`DataType::to_physical_type`],
 /// which declares the in-memory representation of data.
 /// The [`DataType::Extension`] is special in that it augments a [`DataType`] with metadata to support custom types.
-/// Use `to_logical_type` to desugar such type and return its correspoding logical type.
+/// Use `to_logical_type` to desugar such type and return its corresponding logical type.
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde_types", derive(Serialize, Deserialize))]
 pub enum DataType {
@@ -144,12 +144,12 @@ pub enum DataType {
     /// that contain many repeated values using less memory, but with
     /// a higher CPU overhead for some operations.
     ///
-    /// This type mostly used to represent low cardinality string
+    /// This type is mostly used to represent low cardinality string
     /// arrays or a limited set of primitive types as integers.
     ///
     /// The `bool` value indicates the `Dictionary` is sorted if set to `true`.
     Dictionary(IntegerType, Box<DataType>, bool),
-    /// Decimal value with precision and scale
+    /// Decimal value with precision and scale where
     /// precision is the number of digits in the number and
     /// scale is the number of decimal places.
     /// The number 999.99 has a precision of 5 and scale of 2.

@@ -52,7 +52,7 @@ impl PhysicalType {
     }
 }
 
-/// the set of valid indices types of a dictionary-encoded Array.
+/// The set of valid indices types of a dictionary-encoded Array.
 /// Each type corresponds to a variant of [`crate::array::DictionaryArray`].
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde_types", derive(Serialize, Deserialize))]
