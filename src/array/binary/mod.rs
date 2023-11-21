@@ -55,7 +55,7 @@ mod data;
 ///
 /// # Safety
 /// The following invariants hold:
-/// * Two consecutives `offsets` casted (`as`) to `usize` are valid slices of `values`.
+/// * Two consecutive `offsets` casted (`as`) to `usize` are valid slices of `values`.
 /// * `len` is equal to `validity.len()`, when defined.
 #[derive(Clone)]
 pub struct BinaryArray<O: Offset> {
@@ -122,18 +122,18 @@ impl<O: Offset> BinaryArray<O> {
         ZipValidity::new_with_validity(self.values_iter(), self.validity.as_ref())
     }
 
-    /// Returns an iterator of `&[u8]` over every element of this array, ignoring the validity
+    /// Returns an iterator of `&[u8]` over every element of this array, ignoring the validity.
     pub fn values_iter(&self) -> BinaryValueIter<O> {
         BinaryValueIter::new(self)
     }
 
-    /// Returns the length of this array
+    /// Returns the length of this array.
     #[inline]
     pub fn len(&self) -> usize {
         self.offsets.len_proxy()
     }
 
-    /// Returns the element at index `i`
+    /// Returns the element at index `i`.
     /// # Panics
     /// iff `i >= self.len()`
     #[inline]
@@ -142,9 +142,9 @@ impl<O: Offset> BinaryArray<O> {
         unsafe { self.value_unchecked(i) }
     }
 
-    /// Returns the element at index `i`
+    /// Returns the element at index `i`.
     /// # Safety
-    /// Assumes that the `i < self.len`.
+    /// Assumes that `i < self.len`.
     #[inline]
     pub unsafe fn value_unchecked(&self, i: usize) -> &[u8] {
         // soundness: the invariant of the function
@@ -154,7 +154,7 @@ impl<O: Offset> BinaryArray<O> {
         self.values.get_unchecked(start..end)
     }
 
-    /// Returns the element at index `i` or `None` if it is null
+    /// Returns the element at index `i` or `None` if it is null.
     /// # Panics
     /// iff `i >= self.len()`
     #[inline]
@@ -221,7 +221,7 @@ impl<O: Offset> BinaryArray<O> {
     impl_mut_validity!();
     impl_into_array!();
 
-    /// Returns its internal representation
+    /// Returns its internal representation.
     #[must_use]
     pub fn into_inner(self) -> (DataType, OffsetsBuffer<O>, Buffer<u8>, Option<Bitmap>) {
         let Self {
@@ -233,7 +233,7 @@ impl<O: Offset> BinaryArray<O> {
         (data_type, offsets, values, validity)
     }
 
-    /// Try to convert this `BinaryArray` to a `MutableBinaryArray`
+    /// Try to convert this `BinaryArray` to a `MutableBinaryArray`.
     #[must_use]
     pub fn into_mut(self) -> Either<Self, MutableBinaryArray<O>> {
         use Either::*;
@@ -305,7 +305,7 @@ impl<O: Offset> BinaryArray<O> {
         Self::new(data_type, OffsetsBuffer::new(), Buffer::new(), None)
     }
 
-    /// Creates an null [`BinaryArray`], i.e. whose `.null_count() == .len()`.
+    /// Creates a null [`BinaryArray`], i.e. whose `.null_count() == .len()`.
     #[inline]
     pub fn new_null(data_type: DataType, length: usize) -> Self {
         Self::new(
@@ -316,7 +316,7 @@ impl<O: Offset> BinaryArray<O> {
         )
     }
 
-    /// Returns the default [`DataType`], `DataType::Binary` or `DataType::LargeBinary`
+    /// Returns the default [`DataType`], `DataType::Binary` or `DataType::LargeBinary`.
     pub fn default_data_type() -> DataType {
         if O::IS_LARGE {
             DataType::LargeBinary
@@ -325,7 +325,7 @@ impl<O: Offset> BinaryArray<O> {
         }
     }
 
-    /// Alias for unwrapping [`Self::try_new`]
+    /// Alias for unwrapping [`Self::try_new`].
     pub fn new(
         data_type: DataType,
         offsets: OffsetsBuffer<O>,
@@ -337,7 +337,7 @@ impl<O: Offset> BinaryArray<O> {
 
     /// Returns a [`BinaryArray`] from an iterator of trusted length.
     ///
-    /// The [`BinaryArray`] is guaranteed to not have a validity
+    /// The [`BinaryArray`] is guaranteed to not have a validity.
     #[inline]
     pub fn from_trusted_len_values_iter<T: AsRef<[u8]>, I: TrustedLen<Item = T>>(
         iterator: I,
@@ -347,7 +347,7 @@ impl<O: Offset> BinaryArray<O> {
 
     /// Returns a new [`BinaryArray`] from a [`Iterator`] of `&[u8]`.
     ///
-    /// The [`BinaryArray`] is guaranteed to not have a validity
+    /// The [`BinaryArray`] is guaranteed to not have a validity.
     pub fn from_iter_values<T: AsRef<[u8]>, I: Iterator<Item = T>>(iterator: I) -> Self {
         MutableBinaryArray::<O>::from_iter_values(iterator).into()
     }
